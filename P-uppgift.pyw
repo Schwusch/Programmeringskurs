@@ -1,13 +1,13 @@
 # -*- coding: iso-8859-15 -*-
 #Titel: Teaterekonomi
-#F�rfattare: Jonathan B�cker
+#Författare: Jonathan Böcker
 #Datum: 2014-05-18
 #
-#Det h�r �r ett program f�r hantering av ett antal teatrars biljettf�rs�ljning
+#Det här är ett program för hantering av ett antal teatrars biljettförsäljning
 #Programmets information om teatrarna lagras i en fil med namnet "teatrar.txt"
-#mellan k�rningarna.
-#Filens syntax �r:
-#namn/antal platser/pris vuxenbiljett/pris barnbiljett/pris pension�rbiljett
+#mellan körningarna.
+#Filens syntax är:
+#namn/antal platser/pris vuxenbiljett/pris barnbiljett/pris pensionärbiljett
 
 import os
 from tkinter import *
@@ -15,16 +15,16 @@ from tkinter import ttk
 from random import choice
 
 #En klass som beskriver en teater:
-#	name - namnet p� teatern
+#	name - namnet på teatern
 #	seats - totalt antal platser i salongen
-#	price_adult - pris p� vuxenbiljett
-#	price_child - pris p� barnbiljett
-#	price_senior - pris p� pension�rsbiljett
-#	sold_adult - s�lda vuxenbiljetter
-#	sold_child - s�lda barnbiljetter
-#	sold_senior - s�lda pension�rsbiljetter
-#	percentage_sold - bel�ggning i procent
-#	sum_income - summan av int�kterna
+#	price_adult - pris på vuxenbiljett
+#	price_child - pris på barnbiljett
+#	price_senior - pris på pensionärsbiljett
+#	sold_adult - sålda vuxenbiljetter
+#	sold_child - sålda barnbiljetter
+#	sold_senior - sålda pensionärsbiljetter
+#	percentage_sold - beläggning i procent
+#	sum_income - summan av intäkterna
 class Theater:
 	def __init__(self, name, seats, price_adult, price_child, price_senior):
 		self.name = name
@@ -41,8 +41,8 @@ class Theater:
 	def __str__(self):
 		return self.name
 
-#En klass som ritar ett nytt f�nster med en lista eller ett meddelande
-#	solution_list - lista fr�n calculate_tickets som ska presenteras
+#En klass som ritar ett nytt fönster med en lista eller ett meddelande
+#	solution_list - lista från calculate_tickets som ska presenteras
 #	box_message - meddelande som ska presenteras om solution_list är tom
 class draw_new_window():
 	def __init__(self, solution_list, box_message):
@@ -52,7 +52,7 @@ class draw_new_window():
 		self.top.grid_rowconfigure(0, weight=1)
 
 		if len(solution_list) != 0:
-			self.top.title("M�jliga l�sningar")
+			self.top.title("Möjliga lösningar")
 			self.scrollbar = ttk.Scrollbar(self.top, orient="vertical")
 			self.canvas = Canvas(self.top, yscrollcommand=self.scrollbar.set,
 								width=250, height=100)
@@ -70,7 +70,7 @@ class draw_new_window():
 
 			self.frame.bind("<Configure>", self.OnFrameConfigure)
 
-			self.text = ["Alternativ: ", "Vuxna ", "Pension�rer ", "Barn"]
+			self.text = ["Alternativ: ", "Vuxna ", "Pensionärer ", "Barn"]
 			for x, y in enumerate(self.text):
 				ttk.Label(self.frame, text=y).grid(column=x, row=1, sticky=NSEW)
 
@@ -90,13 +90,13 @@ class draw_new_window():
 			self.button = Button(self.tiny_frame, text="Okay", command=self.top.destroy)
 			self.button.grid(column=0, row=1)
 
-	#Metod som kallas s� fort f�nstrets storlek �ndras.
-	#Uppdaterar omr�det som skall scrollas.
+	#Metod som kallas så fort fönstrets storlek ändras.
+	#Uppdaterar området som skall scrollas.
 	def OnFrameConfigure(self, event):
 		self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
-#�ppnar och l�ser in filen med informationen om teatrarna
-#och skapar ett objekt f�r varje teater och l�gger dem i en lista.
+#öppnar och läser in filen med informationen om teatrarna
+#och skapar ett objekt för varje teater och lägger dem i en lista.
 #IN = Filens namn(string)
 #OUT = En lista med "Theater" objekt
 def create_list(FILENAME):
@@ -106,7 +106,7 @@ def create_list(FILENAME):
 	for line in f:
 		parts = line.strip().split('/')
 
-		#I fall "parts" inte �r 5 l�ng, g�rs "theaters" tom och loopen bryts.
+		#I fall "parts" inte är 5 lång, görs "theaters" tom och loopen bryts.
 		if len(parts) != 5:
 			theaters = []
 			break
@@ -116,9 +116,9 @@ def create_list(FILENAME):
 	f.close()
 	return theaters
 
-#R�knar ut samtliga teatrars bel�ggning, int�kter,
-#Samt summan av alla teatrars int�kter.
-#Kallar p� draw_new_window och presenterar en sorterad lista. 
+#Räknar ut samtliga teatrars beläggning, intäkter,
+#Samt summan av alla teatrars intäkter.
+#Kallar på draw_new_window och presenterar en sorterad lista. 
 def present_profits(event=None):
 	for thing in theater_list:
 		try:
@@ -133,7 +133,7 @@ def present_profits(event=None):
 			continue
 	sum_all_theaters_income.set(0) 
 
-	#Sorterar �ven listan med teatrar med h�nseende p� utf�rs�ljning
+	#Sorterar även listan med teatrar med hänseende på utförsäljning
 	sorted_theater_list = sorted(theater_list, key=lambda Theater: Theater.percentage_sold.get(), reverse=True)
 
 	empty_message = ""
@@ -145,10 +145,10 @@ def present_profits(event=None):
 		calculated_message += str(thing.name + "  " + str(thing.sum_income.get()) + "kr  " +
 			str(thing.percentage_sold.get()) + "%" + "\n")
 	
-	#Skapar nytt f�nster med sorterade listan presenterad
+	#Skapar nytt fönster med sorterade listan presenterad
 	profits_window = draw_new_window(empty_message, calculated_message)
 
-#R�knar ut antal biljetter av varje sort n�r anv�ndaren v�ljer teater
+#Räknar ut antal biljetter av varje sort när användaren väljer teater
 #och skriver in kassans storlek
 def calculate_tickets(event=None):
 	solution_list = []
@@ -167,17 +167,17 @@ def calculate_tickets(event=None):
 					if antbarn >= 0:
 						solution_list.append((int(antvuxna),int(antpens),int(antbarn)))
 		if len(solution_list) == 0:
-			box_message = "Det fanns inga m�jliga l�sningar"
+			box_message = "Det fanns inga möjliga lösningar"
 
 	elif amount <= 0:
-		box_message = "Kan bara r�kna p� kassor st�rre �n 0 kr"
+		box_message = "Kan bara räkna på kassor större än 0 kr"
 	else:
-		box_message= "F�rtj�nsten kan max bli " + str(max_amount) + "kr p� en kv�ll f�r denna teatern"
+		box_message= "Förtjänsten kan max bli " + str(max_amount) + "kr på en kväll för denna teatern"
 
-	#Kallar p� draw_new_window
+	#Kallar på draw_new_window
 	solution_window = draw_new_window(solution_list, box_message)
 
-#Skapar ett nytt f�nster och visar information om vald teater
+#Skapar ett nytt fönster och visar information om vald teater
 def show_info():
 	top2 = Toplevel()
 	top2.title("Teaterinfo")
@@ -188,23 +188,23 @@ def show_info():
 
 	theater_to_show = choose_theater.current()
 	text_to_show = (theater_list[theater_to_show].name + "\n" + str(theater_list[theater_to_show].seats) + " platser\n\n" +
-		str(theater_list[theater_to_show].price_adult) + "kr f�r en vuxenbiljett\n" + str(theater_list[theater_to_show].price_senior) +
-		"kr f�r en pension�rsbiljett\n" +str(theater_list[theater_to_show].price_child) + "kr f�r en barnbiljett\n")
+		str(theater_list[theater_to_show].price_adult) + "kr för en vuxenbiljett\n" + str(theater_list[theater_to_show].price_senior) +
+		"kr för en pensionärsbiljett\n" +str(theater_list[theater_to_show].price_child) + "kr för en barnbiljett\n")
 
-	max_profits = "Max f�rtj�nst p� en kv�ll:\n" + str(theater_list[theater_to_show].seats * theater_list[theater_to_show].price_adult) + "kr"
+	max_profits = "Max förtjänst på en kväll:\n" + str(theater_list[theater_to_show].seats * theater_list[theater_to_show].price_adult) + "kr"
 
 	ttk.Label(infoframe, text=text_to_show).grid(column=1, row=1, sticky=(W,E))
 	ttk.Label(infoframe, text=max_profits).grid(column=1, row=2, sticky=(W,E))
 	button = Button(infoframe, text="Okay", command=top2.destroy)
 	button.grid(column=1, row=3)
 
-#Skapar ett f�nster och visar ett felmeddelande error_message
+#Skapar ett fönster och visar ett felmeddelande error_message
 def error_window():
 	ttk.Label(mainframe, text=error_message, justify="center").grid(column=1, row=1, sticky=(W, E))
 
 
 # Huvudprogram
-#Den grafiska delen initieras h�r.
+#Den grafiska delen initieras här.
 root = Tk()
 root.title("Teater ekonomi")
 root.resizable(True, True)
@@ -226,21 +226,21 @@ FILENAME = "teatrar.txt"
 error_message = ""
 
 #Felkontroll av filen "teatrar.txt"
-#Kontrollerar om create_list() kan k�ras utan fel. Ger felmeddelande annars.
+#Kontrollerar om create_list() kan köras utan fel. Ger felmeddelande annars.
 try:
 	theater_list = create_list(FILENAME)
 except ValueError:
-	error_message = "Filen 'teatrar.txt' �r korrupt.\nProgrammet kan inte forts�tta."
+	error_message = "Filen 'teatrar.txt' är korrupt.\nProgrammet kan inte fortsätta."
 
-#Kontrollerar att filen finns, och om den inte g�r det s� ges felmeddelande.
+#Kontrollerar att filen finns, och om den inte gör det så ges felmeddelande.
 except FileNotFoundError:
-	error_message = "Filen 'teatrar.txt' existerar inte eller �r inte i programmappen.\nProgrammet kan inte forts�tta."
+	error_message = "Filen 'teatrar.txt' existerar inte eller är inte i programmappen.\nProgrammet kan inte fortsätta."
 
 if len(error_message) != 0:
 	error_window()
 
 elif len(theater_list) == 0:
-	error_message = "Filen 'teatrar.txt' �r tom eller korrupt.\nProgrammet kan inte forts�tta"
+	error_message = "Filen 'teatrar.txt' är tom eller korrupt.\nProgrammet kan inte fortsätta"
 	error_window()
 
 #
@@ -257,9 +257,9 @@ else:
 	headlines.append(ttk.Label(mainframe, text="Teatrar"))
 	headlines.append(ttk.Label(mainframe, text="Vuxenbiljetter"))
 	headlines.append(ttk.Label(mainframe, text="Barnbiljetter"))
-	headlines.append(ttk.Label(mainframe, text="Pension�rbiljetter"))
+	headlines.append(ttk.Label(mainframe, text="Pensionärbiljetter"))
 	headlines.append(ttk.Label(mainframe, text="Procent fullsatt"))
-	headlines.append(ttk.Label(mainframe, text="Inkomst f�r kv�llen"))
+	headlines.append(ttk.Label(mainframe, text="Inkomst för kvällen"))
 
 	headlines[0].grid(column=1, row=0, sticky=NSEW)
 	headlines[1].grid(column=2, row=0, sticky=NSEW)
@@ -345,7 +345,7 @@ else:
 	for x in theater_list:
 		choose_theater_list.append(x.name)
 	
-	infolabel = ttk.Label(secondframe, text="R�kna utifr�n en kassa hur m�nga biljetter som s�lts")
+	infolabel = ttk.Label(secondframe, text="Räkna utifrån en kassa hur många biljetter som sålts")
 	infolabel.grid(column=1, row=0, columnspan=3)
 
 	infolabel2 = ttk.Label(secondframe, text="Kassa:")
@@ -354,7 +354,7 @@ else:
 	enterbutton2 = ttk.Button(secondframe, text="Visa info", command=show_info)
 	enterbutton2.grid(column=1, row=1, sticky=W)
 
-	enterbutton3 = ttk.Button(secondframe, text="     Kalkylera\nKan ta l�ng tid!", command=calculate_tickets)
+	enterbutton3 = ttk.Button(secondframe, text="     Kalkylera\nKan ta lång tid!", command=calculate_tickets)
 	enterbutton3.grid(column=2, row=1, sticky=W)
 
 	choose_theater = ttk.Combobox(secondframe, values=choose_theater_list)
@@ -370,9 +370,9 @@ else:
 
 	#Ett intro-meddelande som f�rklarar snabbt vad programmet g�r i ett nytt f�nster.
 	empty_list = []
-	tutorial_message = """Det h�r programmet r�knar ut teatrars f�rs�ljning och f�rtj�nst p� en kv�ll.\n
-Teatrarnas information lagras i en fil 'teatrar.txt'. Syntaxen f�r filen hittas i k�llkoden.\n
-Skriv in antal biljetter som s�lts och tryck Enter i ett av f�lten eller tryck 'Kalkylera'\n
+	tutorial_message = """Det här programmet räknar ut teatrars försäljning och förtjänst på en kväll.\n
+Teatrarnas information lagras i en fil 'teatrar.txt'. Syntaxen för filen hittas i början av källkoden.\n
+Skriv in antal biljetter som sålts och tryck Enter i ett av fälten eller tryck 'Kalkylera'\n
 """
 	tutorial_window = draw_new_window(empty_list, tutorial_message)
 
