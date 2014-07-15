@@ -1,0 +1,5 @@
+Riksteatern/250/200/100/150
+Brandbergenteatern/75/110/60/90
+Rudanteatern/130/80/40/60
+Exempelteatern1/25/20/10/15
+Exempelteatern2/50/40/20/30
