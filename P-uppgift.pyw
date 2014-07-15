@@ -137,7 +137,7 @@ def present_profits(event=None):
 	sorted_theater_list = sorted(theater_list, key=lambda Theater: Theater.percentage_sold.get(), reverse=True)
 
 	empty_message = ""
-	calculated_message = "Sorterad lista efter procent uts�lt: \n \n"
+	calculated_message = "Sorterad lista efter procent utsålt: \n \n"
 
 	for thing in sorted_theater_list:
 		sum_all_theaters_income.set(thing.sum_income.get() + sum_all_theaters_income.get())
@@ -337,7 +337,7 @@ else:
 	enterbutton1 = ttk.Button(mainframe, text="Kalkylera", command=present_profits)
 	enterbutton1.grid(column=8, row=len(theater_list)+2, sticky=E, rowspan=2, columnspan=2)
 
-	#H�r kommer andra ramen
+	#Här kommer andra ramen
 	choose_theater_list = []
 	amount_to_calculate = IntVar()
 
@@ -368,7 +368,7 @@ else:
 
 	ttk.Label(secondframe, text="kr").grid(column=5, row=1, sticky=W)
 
-	#Ett intro-meddelande som f�rklarar snabbt vad programmet g�r i ett nytt f�nster.
+	#Ett intro-meddelande som förklarar snabbt vad programmet går i ett nytt fönster.
 	empty_list = []
 	tutorial_message = """Det här programmet räknar ut teatrars försäljning och förtjänst på en kväll.\n
 Teatrarnas information lagras i en fil 'teatrar.txt'. Syntaxen för filen hittas i början av källkoden.\n
